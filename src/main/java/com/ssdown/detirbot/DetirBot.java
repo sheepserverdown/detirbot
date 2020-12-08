@@ -2,7 +2,6 @@ package com.ssdown.detirbot;
 
 import com.ssdown.detirbot.config.Configuration;
 import lombok.Getter;
-import lombok.Setter;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -14,17 +13,24 @@ import javax.security.auth.login.LoginException;
 
 @Getter
 public class DetirBot {
-    private static final Logger log = LoggerFactory.getLogger(DetirBot.class);
+    private static final Logger logger = LoggerFactory.getLogger(DetirBot.class);
 
-    static DetirBot detirBot;
+    protected static DetirBot detirBot;
 
-    private String SECRET_TOKEN = "";
-    private final Configuration config;
+    private String SECRET_TOKEN;
+    private Configuration config;
     private JDA jda;
+
+    private Constants constants;
 
     public DetirBot() {
         DetirBot.detirBot = this;
-        config = new Configuration(null,"botConfig.yml");
+        config = new Configuration();
+
+        if(!config.exists()) {
+            logger.info("에러가 발생했습니다.");
+            System.exit(Constants.EXIT_CODE_NORMAL);
+        }
 
         try {
             jda = JDABuilder.createDefault(SECRET_TOKEN)
@@ -39,7 +45,7 @@ public class DetirBot {
     }
 
     public static Logger getLogger() {
-        return log;
+        return logger;
     }
 
 }
