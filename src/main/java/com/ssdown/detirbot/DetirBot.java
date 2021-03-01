@@ -1,5 +1,6 @@
 package com.ssdown.detirbot;
 
+import com.ssdown.detirbot.command.MusicCommand;
 import com.ssdown.detirbot.config.Configuration;
 import lombok.Getter;
 import net.dv8tion.jda.api.JDA;
@@ -30,13 +31,16 @@ public class DetirBot {
         if(!config.exists()) {
             logger.info("에러가 발생했습니다.");
             System.exit(Constants.EXIT_CODE_NORMAL);
+        } else {
+            this.SECRET_TOKEN = config.getToken();
         }
 
         try {
             jda = JDABuilder.createDefault(SECRET_TOKEN)
                     .setActivity(Activity.playing("봇 만들어지는중"))
                     .setStatus(OnlineStatus.ONLINE)
-                    .addEventListeners(new MessageListener())
+                    .addEventListeners(new MusicCommand())
+                    .addEventListeners()
                     .build();
 
         } catch (LoginException e) {

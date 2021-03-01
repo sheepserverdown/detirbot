@@ -7,6 +7,6 @@ public class Constants {
     public static final int EXIT_CODE_UPDATE = 11;
 
     public static final String propertyFilename = "application.properties";
-    public static final String propertyDirectory = "resources/" + propertyFilename;
+    public static final String propertyDirectory = "resources/";
 
 }
