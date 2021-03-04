@@ -48,6 +48,7 @@ task fatJar(type: Jar) {
 repositories {
 	mavenCentral()
 	jcenter()
+	google()
 }
 
 dependencies {
@@ -68,16 +69,26 @@ dependencies {
 	implementation "org.apache.commons:commons-text:1.9"
 	implementation "org.apache.commons:commons-collections4:4.4"
 
+	//lavaplayer
 	implementation "com.sedmelluq:lavaplayer:1.3.71"
 
+	//json parser
 	implementation "org.json:json:20201115"
 
+	//unirest
 	implementation "com.mashape.unirest:unirest-java:1.4.9"
 
+	//slf4j
 	implementation "org.slf4j:slf4j-api:1.7.25"
 
+	//lombok & db
 	implementation 'org.projectlombok:lombok:1.18.16'
 	testImplementation 'org.postgresql:postgresql:42.2.18'
+
+	//google api dependency
+	implementation 'com.google.http-client:google-http-client:1.39.0'
+	implementation 'com.google.apis:google-api-services-youtube:v3-rev20210210-1.31.0'
+	//implementation 'com.google.api-client:google-api-client:1.31.3'
 
 	annotationProcessor 'org.projectlombok:lombok:1.18.16'
 }
