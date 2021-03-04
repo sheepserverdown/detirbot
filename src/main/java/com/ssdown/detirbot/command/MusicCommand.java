@@ -22,7 +22,6 @@ import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-import javax.sound.midi.Track;
 import java.util.*;
 
 public class MusicCommand extends Command{
@@ -135,7 +134,8 @@ public class MusicCommand extends Command{
                         // 추가 입력 대기하기
                     case "play": // 바로 재생
                         if(args.length <= 1) {
-                            sender.sendMessage("올바른 내용을 입력해주세요.");
+                            tryToDelete(e.getMessage());
+                            sender.sendMessage("정상적인 URL을 입력해 주세요.");
                         } else {
                             loadTrack(input, e.getMember(), e.getMessage(), sender);
                         }
@@ -284,7 +284,7 @@ public class MusicCommand extends Command{
 
     private void sendHelpMessage(MessageSender sender) {
         sender.sendEmbed("Music bot 명령어", MessageUtil.stripFormatting(Configuration.getInstance().getPrefix()) + "music\n"
-                + "         -> play [url]           - 음악이 플레이리스트를 불러옵니다.\n"
+                + "         -> play [url]           - URL의 음악을 재생합니다.\n"
                 + "         -> ytplay [query]  - 유튜브에서 비디오를 검색해 로드합니다.\n"
                 + "         -> queue                 - 현재 대기중인 플레이리스트를 확인합니다.\n"
                 + "         -> skip                     - 재생중인 트랙을 넘기는 것에 대한 표를 던집니다.\n"
@@ -292,7 +292,7 @@ public class MusicCommand extends Command{
                 + "         -> forceskip**\\***          - 강제 스킵\n"
                 + "         -> shuffle**\\***              - 현재 큐 섞기\n"
                 + "         -> reset**\\***                 - 뮤직봇 리셋\n\n"
-                + "**\\표시가 있는 명령어는 \\** 봇 주인만 사용 가능합니다."
+                + "\\* 표시가 있는 명령어는 __**봇 주인만 사용 가능합니다**__."
         );
     }
 
