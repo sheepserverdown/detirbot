@@ -1,5 +1,6 @@
 package com.ssdown.detirbot;
 
+import com.ssdown.detirbot.command.HelpCommand;
 import com.ssdown.detirbot.command.MusicCommand;
 import com.ssdown.detirbot.config.Configuration;
 import lombok.Getter;
@@ -7,10 +8,13 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.LoginException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 public class DetirBot {
@@ -20,11 +24,12 @@ public class DetirBot {
 
     private String SECRET_TOKEN;
     private Configuration config;
+    private JDABuilder jdaBuilder;
     private JDA jda;
 
     private Constants constants;
 
-    public DetirBot() {
+    public DetirBot() throws LoginException {
         DetirBot.detirBot = this;
         config = new Configuration();
 
@@ -35,13 +40,18 @@ public class DetirBot {
             this.SECRET_TOKEN = config.getToken();
         }
 
+        List<ListenerAdapter> commandList = new ArrayList<>();
+        commandList.add(new MusicCommand());
+        commandList.add(new HelpCommand());
+
         try {
-            jda = JDABuilder.createDefault(SECRET_TOKEN)
+            jdaBuilder = JDABuilder.createDefault(SECRET_TOKEN)
                     .setActivity(Activity.playing("봇 만들어지는중"))
-                    .setStatus(OnlineStatus.ONLINE)
-                    .addEventListeners(new MusicCommand())
-                    .addEventListeners()
-                    .build();
+                    .setStatus(OnlineStatus.ONLINE);
+            for(ListenerAdapter listenerAdapter : commandList) {
+                jdaBuilder.addEventListeners(listenerAdapter);
+            }
+            jdaBuilder.build();
 
         } catch (LoginException e) {
             e.printStackTrace();
