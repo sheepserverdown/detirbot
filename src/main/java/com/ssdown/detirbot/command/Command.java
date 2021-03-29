@@ -19,7 +19,7 @@ abstract class Command extends ListenerAdapter {
     // 커맨드 실행
     public abstract void executeCommand(String[] args, MessageReceivedEvent e, MessageSender chat);
 
-    public abstract List<String> getAlias();
+    public abstract List<String> getAlias(); // 정의된 명령어 저장하는 리스트
 
     public boolean allowsPrivate() {
         return false;
