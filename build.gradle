@@ -4,7 +4,7 @@ group = 'com.ssdown'
 version = '0.0.1-SNAPSHOT'
 // sourceCompatibility = '11'
 
-def jdaVersion = '4.2.0_222'
+def jdaVersion = '4.2.0_252'
 //task fatJar(type: Jar) {
 //	manifest.from jar.manifest
 //	classifier('all')
@@ -49,6 +49,10 @@ repositories {
 	mavenCentral()
 	jcenter()
 	google()
+	maven {
+		name 'm2-dv8tion'
+		url 'https://m2.dv8tion.net/releases'
+	}
 }
 
 dependencies {
