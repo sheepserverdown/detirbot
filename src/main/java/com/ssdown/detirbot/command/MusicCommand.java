@@ -69,8 +69,8 @@ public class MusicCommand extends Command{
 
                     case "queue":
                         if(!hasPlayer(guild) || getTrackManager(guild).getQueuedTracks().isEmpty()) {
-                            sender.sendMessage("대기중인 음악 리스트가 비어있습니다. 다음 커맨드로 곡을 재생해주세요. \n"
-                            + MessageUtil.stripFormatting(Configuration.getInstance().getPrefix()) + "music **");
+                            sender.sendMessage("플레이리스트가 비어있습니다. 다음 커맨드로 곡을 재생해주세요. \n"
+                            + "> " + MessageUtil.stripFormatting(Configuration.getInstance().getPrefix()) + "music **");
                         } else {
                             StringBuilder sb = new StringBuilder();
                             Set<AudioInfo> queue = getTrackManager(guild).getQueuedTracks();
@@ -102,6 +102,18 @@ public class MusicCommand extends Command{
                                 }
                             }
                         }
+                        break;
+
+                    case "pause":
+                        if(isIdle(sender, guild)) return;
+
+                        pauseMusic(guild, sender);
+                        break;
+
+                    case "resume":
+                        if(isIdle(sender, guild)) return;
+
+                        resumeMusic(guild, sender);
                         break;
 
                     case "forceskip":
@@ -181,7 +193,7 @@ public class MusicCommand extends Command{
     // 플레이어 객체 가져오기
     private AudioPlayer getPlayer(Guild guild) {
         AudioPlayer player;
-        if(!hasPlayer(guild)) {
+        if(hasPlayer(guild)) {
             player = players.get(guild.getId()).getKey();
         } else {
             player = createPlayer(guild);
@@ -282,6 +294,22 @@ public class MusicCommand extends Command{
         sender.sendMessage("현재 트랙을 스킵합니다!!");
     }
 
+    private void pauseMusic(Guild guild, MessageSender sender) {
+        if(!getPlayer(guild).isPaused()) {
+            getPlayer(guild).setPaused(true);
+        } else {
+            sender.sendMessage("이미 일시정지 중입니다.");
+        }
+    }
+
+    private void resumeMusic(Guild guild, MessageSender sender) {
+        if(getPlayer(guild).isPaused()) {
+           getPlayer(guild).setPaused(false);
+        } else {
+            sender.sendMessage("이미 재생 중입니다.");
+        }
+    }
+
     private void sendHelpMessage(MessageSender sender) {
         sender.sendEmbed("Music bot 명령어", MessageUtil.stripFormatting(Configuration.getInstance().getPrefix()) + "music\n"
                 + "         -> play [url]           - URL의 음악을 재생합니다.\n"
@@ -289,6 +317,8 @@ public class MusicCommand extends Command{
                 + "         -> queue                 - 현재 대기중인 플레이리스트를 확인합니다.\n"
                 + "         -> skip                     - 재생중인 트랙을 넘기는 것에 대한 표를 던집니다.\n"
                 + "         -> current               - 현재 재생중인 트랙에 대한 정보를 확인합니다.\n"
+                + "         -> pause                 - 현재 재생중인 트랙을 일시정지 합니다. \n"
+                + "         -> resume                - 현재 재생중인 트랙의 일시정지를 해제합니다. \n"
                 + "         -> forceskip**\\***          - 강제 스킵\n"
                 + "         -> shuffle**\\***              - 현재 큐 섞기\n"
                 + "         -> reset**\\***                 - 뮤직봇 리셋\n\n"
