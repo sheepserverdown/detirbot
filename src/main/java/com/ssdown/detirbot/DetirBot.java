@@ -20,6 +20,7 @@ import java.util.List;
 public class DetirBot {
     private static final Logger logger = LoggerFactory.getLogger(DetirBot.class);
 
+    //Singleton 패턴으로 접근 가능하게
     protected static DetirBot detirBot;
 
     private String SECRET_TOKEN;
@@ -27,9 +28,7 @@ public class DetirBot {
     private JDABuilder jdaBuilder;
     private JDA jda;
 
-    private Constants constants;
-
-    public DetirBot() throws LoginException {
+    public DetirBot() {
         DetirBot.detirBot = this;
         config = new Configuration();
 
@@ -51,7 +50,8 @@ public class DetirBot {
             for(ListenerAdapter listenerAdapter : commandList) {
                 jdaBuilder.addEventListeners(listenerAdapter);
             }
-            jdaBuilder.build();
+
+            jda = jdaBuilder.build();
 
         } catch (LoginException e) {
             e.printStackTrace();
@@ -61,5 +61,7 @@ public class DetirBot {
     public static Logger getLogger() {
         return logger;
     }
+
+    public static DetirBot getInstance() {return detirBot;}
 
 }
