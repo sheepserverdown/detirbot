@@ -98,7 +98,7 @@ public class MusicCommand extends Command{
                                 } else {
                                     info.addSkip(e.getAuthor());
                                     tryToDelete(e.getMessage());
-                                    sender.sendMessage("**" + MessageUtil.userDiscrimSet(e.getAuthor()) + "** 유저가 현재 곡을 스킵하는데 동의했씁니다. [" + (votes + 1) + "/3]");
+                                    sender.sendMessage("**" + MessageUtil.userDiscrimSet(e.getAuthor()) + "** 유저가 현재 곡을 스킵하는데 동의했습니다. [" + (votes + 1) + "/3]");
                                 }
                             }
                         }
@@ -224,7 +224,7 @@ public class MusicCommand extends Command{
         guild.getAudioManager().closeAudioConnection();
     }
 
-    //
+    // 입력 받은 주소로 재생하기
     private void loadTrack(String identifier, Member member, Message msg, Command.MessageSender sender) {
         if(member.getVoiceState().getChannel() == null) {
             sender.sendMessage("보이스 챗에 입장한 후 이용해주세요!");
@@ -237,14 +237,14 @@ public class MusicCommand extends Command{
         msg.getTextChannel().sendTyping().queue();
         audioPlayerManager.loadItemOrdered(guild, identifier, new AudioLoadResultHandler() {
             @Override
-            public void trackLoaded(AudioTrack track) {
+            public void trackLoaded(AudioTrack track) { // 영상 하나만 받았을때
                 sender.sendEmbed(String.format(QUEUE_TITLE, MessageUtil.userDiscrimSet(member.getUser()), 1, ""),
                         String.format(QUEUE_DESCRIPTION, CD, getOrNull(track.getInfo().title), "", MIC, getOrNull(track.getInfo().author), ""));
                 getTrackManager(guild).queue(track, member);
             }
 
             @Override
-            public void playlistLoaded(AudioPlaylist playlist) {
+            public void playlistLoaded(AudioPlaylist playlist) { // 플레이 리스트를 받았을때
                 if(playlist.getSelectedTrack() != null) {
                     trackLoaded(playlist.getSelectedTrack());
                 } else if(playlist.isSearchResult()) {
@@ -258,11 +258,13 @@ public class MusicCommand extends Command{
                 }
             }
 
+            //정상적인 주소가 아닌경우
             @Override
             public void noMatches() {
                 sender.sendEmbed(String.format(ERROR, identifier), "재생 가능한 트랙이 존재하지 않습니다.");
             }
 
+            //로드 실패
             @Override
             public void loadFailed(FriendlyException exception) {
                 sender.sendEmbed(String.format(ERROR, identifier), exception.getLocalizedMessage());
@@ -276,11 +278,12 @@ public class MusicCommand extends Command{
         return member.getId().equals(Configuration.getInstance().getAuthorId());
     }
 
-    //
+    // 현재 음악 재생시킨 사람이랑 동일인물인가?
     private boolean isCurrentRequester(Member member) {
         return getTrackManager(member.getGuild()).getTrackInfo(getPlayer(member.getGuild()).getPlayingTrack()).getMember().equals(member);
     }
 
+    // 유휴상태 확인
     private boolean isIdle(MessageSender sender, Guild guild) {
         if(!hasPlayer(guild) || getPlayer(guild).getPlayingTrack() == null) {
             sender.sendMessage("현재 재생중인 음악이 없습니다!");
@@ -289,11 +292,13 @@ public class MusicCommand extends Command{
         return false;
     }
 
+    // 강제 스킵
     private void forceSkipTrack(Guild guild, MessageSender sender) {
         getPlayer(guild).stopTrack();
         sender.sendMessage("현재 트랙을 스킵합니다!!");
     }
 
+    // 음악 일시정지
     private void pauseMusic(Guild guild, MessageSender sender) {
         if(!getPlayer(guild).isPaused()) {
             getPlayer(guild).setPaused(true);
@@ -302,6 +307,7 @@ public class MusicCommand extends Command{
         }
     }
 
+    // 음악 일시정지 해제
     private void resumeMusic(Guild guild, MessageSender sender) {
         if(getPlayer(guild).isPaused()) {
            getPlayer(guild).setPaused(false);

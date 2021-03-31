@@ -36,6 +36,7 @@ public class MessageUtil {
         return stripFormatting(u.getName() + "#" + u.getDiscriminator());
     }
 
+    //markdown 문법 방지용
     public static String stripFormatting(String s) {
         return s.replace("*", "\\*")
                 .replace("`", "\\`")

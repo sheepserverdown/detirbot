@@ -62,6 +62,7 @@ public class DetirBot {
         return logger;
     }
 
+    // 현재 인스턴스 불러올때 사용
     public static DetirBot getInstance() {return detirBot;}
 
 }
