@@ -13,6 +13,7 @@ public class MessageUtil {
                 || !member.hasPermission(channel, Permission.MESSAGE_WRITE);
     }
 
+    // 보내는 메세지 형식에 따른 메소드
     private static void sendMessage(Message message, MessageChannel channel) {
         if(channel instanceof TextChannel && canNotTalk((TextChannel) channel)) return;
         channel.sendMessage(message).queue(null, null);
