@@ -10,7 +10,6 @@ import java.util.Properties;
 
 
 public class PropertyConfiguration {
-
     //오버라이딩 금지
    protected final Properties properties = new Properties();
 
@@ -28,6 +27,4 @@ public class PropertyConfiguration {
        File file = new File(url.toString().substring(6,url.toString().length() - filename.length()), filename);
        return file;
    }
-
-
 }

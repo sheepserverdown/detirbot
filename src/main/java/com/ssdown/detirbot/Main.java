@@ -6,7 +6,6 @@ public class Main {
 			DetirBot.detirBot = new DetirBot();
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
-
 			System.exit(Constants.EXIT_CODE_NORMAL);
 		}
 

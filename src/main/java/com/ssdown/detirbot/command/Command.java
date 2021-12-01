@@ -84,7 +84,7 @@ abstract class Command extends ListenerAdapter {
         return noPrefix.substring(noPrefix.indexOf(" ") + 1).split("\\s+");
     }
 
-    class MessageSender {
+    public static class MessageSender {
         private final MessageReceivedEvent event;
 
         public MessageSender(MessageReceivedEvent event) {

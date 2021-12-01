@@ -89,10 +89,15 @@ dependencies {
 	implementation 'org.projectlombok:lombok:1.18.16'
 	testImplementation 'org.postgresql:postgresql:42.2.18'
 
+	implementation 'com.vdurmont:emoji-java:5.1.1'
+
 	//google api dependency
 	implementation 'com.google.http-client:google-http-client:1.39.0'
 	implementation 'com.google.apis:google-api-services-youtube:v3-rev20210210-1.31.0'
 	//implementation 'com.google.api-client:google-api-client:1.31.3'
+
+	//Twitter4j
+	implementation 'org.twitter4j:twitter4j-core:4.0.7'
 
 	annotationProcessor 'org.projectlombok:lombok:1.18.16'
 }

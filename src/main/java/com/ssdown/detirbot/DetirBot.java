@@ -1,9 +1,12 @@
 package com.ssdown.detirbot;
 
+import com.ssdown.detirbot.command.BlueArchiveCommand;
 import com.ssdown.detirbot.command.HelpCommand;
 import com.ssdown.detirbot.command.MusicCommand;
 import com.ssdown.detirbot.config.Configuration;
+import com.ssdown.detirbot.util.TwitterUtil;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -17,15 +20,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Slf4j
 public class DetirBot {
     private static final Logger logger = LoggerFactory.getLogger(DetirBot.class);
 
-    //Singleton 패턴으로 접근 가능하게
     protected static DetirBot detirBot;
 
     private String SECRET_TOKEN;
     private Configuration config;
     private JDABuilder jdaBuilder;
+    private TwitterUtil twitterUtil;
     private JDA jda;
 
     public DetirBot() {
@@ -37,11 +41,13 @@ public class DetirBot {
             System.exit(Constants.EXIT_CODE_NORMAL);
         } else {
             this.SECRET_TOKEN = config.getToken();
+            this.twitterUtil = new TwitterUtil();
         }
 
         List<ListenerAdapter> commandList = new ArrayList<>();
         commandList.add(new MusicCommand());
         commandList.add(new HelpCommand());
+        commandList.add(new BlueArchiveCommand());
 
         try {
             jdaBuilder = JDABuilder.createDefault(SECRET_TOKEN)

@@ -19,6 +19,12 @@ public class Configuration extends PropertyConfiguration {
     private final String prefix;
     private final String authorId;
 
+    private final String consumerKey;
+    private final String consumerSecret;
+    private final String bearerToken;
+    private final String accessToken;
+    private final String accessTokenSecret;
+
     public Configuration() {
         getProperty(getClass().getClassLoader(), Constants.propertyFilename);
 
@@ -27,6 +33,12 @@ public class Configuration extends PropertyConfiguration {
         this.token = properties.getProperty("token");
         this.prefix = properties.getProperty("prefix");
         this.authorId = properties.getProperty("authorId");
+
+        this.consumerKey = properties.getProperty("oauth.consumerKey");
+        this.consumerSecret = properties.getProperty("oauth.consumerSecret");
+        this.bearerToken = properties.getProperty("bearerToken");
+        this.accessToken = properties.getProperty("oauth.accessToken");
+        this.accessTokenSecret = properties.getProperty("oauth.accessTokenSecret");
     }
 
     //인스턴스 생성 후 값을 받아오기 위함
